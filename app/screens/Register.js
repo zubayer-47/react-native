@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Alert, StyleSheet, Text, TextInput, TouchableHighlight, TouchableOpacity, View } from 'react-native'
 import { Button } from 'react-native-paper'
 
 import Colors from '../colors'
 import { useNavigate } from 'react-router-native'
+import axios from 'axios'
 
 export default function Register({  }) {
     let [firstName, setFirstName] = useState('')
@@ -13,10 +14,18 @@ export default function Register({  }) {
     let [address, setAddress] = useState('')
     let [focus, setFocus] = useState(false)
 
+    // refs
+    const firsNameRef = useRef();
+    const lastNameRef = useRef();
+    const emailRef = useRef();
+    const passRef = useRef();
+    const addressRef = useRef();
+
     const navigate = useNavigate()
 
     const [submitData, setSubmitData] = useState([])
-    function onPress() {
+
+    async function onPress() {
         firstName = firstName.length ? firstName : ''
         lastName = lastName.length ? lastName : ''
         email = email.length ? email : ''
@@ -24,20 +33,27 @@ export default function Register({  }) {
         address = address.length ? address : ''
         
         if (firstName, lastName, email, password, address) {
-            const singleData = {
-                firstName,
-                lastName,
-                email,
-                address
-            }
+            try {
+                const singleData = {
+                    firstName,
+                    lastName,
+                    password,
+                    email,
+                    address
+                }
 
-            setSubmitData([singleData, ...submitData])
-            setFirstName('')
-            setLastName('')
-            setEmail('')
-            setPassword('')
-            setAddress('')
-            return navigate('/login')
+                await axios.post('http://localhost:5000/api/register', singleData)
+                
+                setSubmitData([singleData, ...submitData])
+                setFirstName('')
+                setLastName('')
+                setEmail('')
+                setPassword('')
+                setAddress('')
+                return navigate('/login')
+            } catch (error) {
+                console.log(error);
+            }
         } else {
             Alert.alert('Wrong Crendentials', 'Fields are required!')
         }
@@ -46,14 +62,14 @@ export default function Register({  }) {
 
     return (
         <View style={styles.container}>
-            <View style={{ top: focus ? '11%' : '8%', left: '-35%' }}>
+            <View style={{ top: focus ? '11%' : '10%', left: '-35%' }}>
                 <TouchableOpacity>
-                    <Button mode='outlined' color={Colors.secondary} onPress={() => navigate('/login')}>
+                    <Button mode='contained' color={Colors.secondary} onPress={() => navigate('/login')}>
                         login
                     </Button>
                 </TouchableOpacity>
             </View>
-            <View style={{ paddingVertical: focus ? '11%' : '45%', }}>
+            <View style={{ paddingVertical: focus ? '11%' : '30%', }}>
                 <Text style={[styles.text, { fontSize: 30, marginBottom: 10, alignSelf: 'center', color: Colors.secondary }]}>Sign up</Text>
                 <View style={styles.inputContainer}>
                     <View style={styles.singleInputContainer}>
@@ -65,6 +81,7 @@ export default function Register({  }) {
                             placeholder='Enter Your First Name'
                             onFocus={() => setFocus(true)}
                             onBlur={() => setFocus(false)}
+                            ref={firsNameRef}
                         /> 
                     </View>
                     <View style={styles.singleInputContainer}>
@@ -76,6 +93,7 @@ export default function Register({  }) {
                             placeholder='Enter Your Last Name'
                             onFocus={() => setFocus(true)}
                             onBlur={() => setFocus(false)}
+                            ref={lastNameRef}
                             />   
                     </View>
                     <View style={styles.singleInputContainer}>
@@ -87,6 +105,7 @@ export default function Register({  }) {
                             placeholder='Enter Your Email Address'
                             onFocus={() => setFocus(true)}
                             onBlur={() => setFocus(false)}
+                            ref={emailRef}
                             />   
                     </View>
                     <View style={styles.singleInputContainer}>
@@ -99,6 +118,7 @@ export default function Register({  }) {
                             secureTextEntry={true}
                             onFocus={() => setFocus(true)}
                             onBlur={() => setFocus(false)}
+                            ref={passRef}
                             />   
                     </View>
                     <View style={styles.singleInputContainer}>
@@ -110,6 +130,7 @@ export default function Register({  }) {
                             placeholder='Enter Your Address'
                             onFocus={() => setFocus(true)}
                             onBlur={() => setFocus(false)}
+                            ref={addressRef}
                             />   
                     </View>
                     <View style={styles.singleInputContainer}>
@@ -139,7 +160,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors['slate-100']
     },
     singleInputContainer: {
-        width: 300,
+        width: 330,
         paddingHorizontal: 15,
         paddingVertical: 10,
     },
@@ -149,7 +170,8 @@ const styles = StyleSheet.create({
         borderColor: Colors.secondary,
         width: '100%',
         borderRadius: 3,
-        paddingHorizontal: 5
+        paddingHorizontal: 5,
+        paddingVertical: 5
     },
     text: {
         color: Colors.dark,

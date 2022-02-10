@@ -1,39 +1,51 @@
-import { useContext, useState } from 'react'
-import { Alert, StyleSheet, Text, TextInput, TouchableHighlight, TouchableOpacity, View } from 'react-native'
+import axios from 'axios'
+import { useContext, useRef, useState } from 'react'
+import { Alert, StyleSheet, Text, TextInput, TouchableHighlight, View } from 'react-native'
 import { Button } from 'react-native-paper'
 import { useNavigate } from 'react-router-native'
 
 import Colors from '../colors'
 import { Context } from '../Context/Context'
 
-
 export default function Register() {
+    const emailRef = useRef();
+    const passwordRef = useRef();
+
     let [email, setEmail] = useState('')
     let [password, setPassword] = useState('')
     const [focus, setFocus] = useState(false)
-    const [submitData, setSubmitData] = useState({})
     const navigate = useNavigate()
 
     const {state, dispatch} = useContext(Context)
 
-    function onPress() {
+    async function onPress() {
         email = email.length ? email : ''
-        password = password.length >= 6 ? password : ''
+        // password = password.length >= 6 ? password : ''
 
         if (email && password) {
-            const singleData = {
-                email, password
-            };
+            try {
+                const res = await axios.post('http://192.168.43.115:5000/api/login', {
+                    email,
+                    password
+                }, {
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                })    
 
-            dispatch({
-                type: "email",
-                value: email
-            })
+                console.log(res);
+                dispatch({
+                    type: "email",
+                    value: email
+                })
 
-            setSubmitData(singleData)
-            setEmail('')
-            setPassword('')
-            return navigate('/home')
+                setEmail('')
+                setPassword('')
+                return navigate('/home')
+            } catch (error) {
+                // console.log(error)
+                console.log(error.message);
+            }
         } else {
             Alert.alert('Wrong Crendentials', 'Fields are required!')
         }
@@ -41,7 +53,7 @@ export default function Register() {
 
     return (
             <View style={styles.container}>
-            <View style={{ paddingVertical: focus ? '33%' : '65%', }}>
+            <View style={{ paddingVertical: focus ? '33%' : '55%', }}>
                 <Text style={[styles.text, { fontSize: 30, marginBottom: 10, color: Colors.secondary }]}>Login</Text>
                 <View style={styles.inputContainer}>
                     <View style={styles.singleInputContainer}>
@@ -53,6 +65,7 @@ export default function Register() {
                             placeholder='Enter Your Email'
                             onFocus={() => setFocus(true)}
                             onBlur={() => setFocus(false)}
+                            ref={emailRef}
                         /> 
                     </View>
                     <View style={styles.singleInputContainer}>
@@ -65,6 +78,7 @@ export default function Register() {
                             placeholder='Enter Your Password'
                             onFocus={() => setFocus(true)}
                             onBlur={() => setFocus(false)}
+                            ref={passwordRef}
                             />   
                     </View>
                     <View style={styles.singleInputContainer}>
@@ -99,7 +113,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors['slate-100'],
     },
     singleInputContainer: {
-        width: 300,
+        width: 330,
         paddingHorizontal: 15,
         paddingVertical: 10,
         
@@ -111,6 +125,7 @@ const styles = StyleSheet.create({
         width: '100%',
         borderRadius: 3,
         paddingHorizontal: 5,
+        paddingVertical: 5
     },
     text: {
         color: Colors.dark,

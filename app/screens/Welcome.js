@@ -15,7 +15,7 @@ export default function Welcome() {
             </View>
           <TouchableOpacity style={{width: '100%'}}>
             <View style={styles.buttonContainer}>
-              <Button mode='contained' color={colors.primary} onPress={() => navigate('/login')}>
+              <Button mode='contained' color='#047857' onPress={() => navigate('/login')}>
                 Get started
               </Button>
             </View>
@@ -24,7 +24,7 @@ export default function Welcome() {
     </ImageBackground>
   );
 }
-
+  
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -34,8 +34,8 @@ const styles = StyleSheet.create({
   },
   title: {
     alignSelf: 'center',
-    fontSize: 30,
-    letterSpacing: 5,
+    fontSize: 28,
+    letterSpacing: 3,
     color: colors['slate-100'],
     textTransform: 'uppercase',
     fontWeight: 'bold',
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     alignSelf: 'center',
     fontSize: 18,
-    // letterSpacing: 3,
+    letterSpacing: 3,
     color: colors['stale-200'],
     textTransform: 'uppercase',
     fontWeight: '500',
