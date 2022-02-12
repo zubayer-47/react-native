@@ -1,12 +1,11 @@
 import axios from 'axios';
-import Base from './Base';
 
 const axiosInstance = axios.create({
-	baseURL: Base.URL,
-	timeout: 5000,
+	baseURL: 'http://127.0.0.1:5000/api',
 	headers: {
 		'Content-Type': 'application/json',
 		accept: 'application/json',
+		
 	},
 });
 

@@ -7,6 +7,7 @@ import Register from './app/screens/Register';
 import Login from './app/screens/Login';
 import Home from './app/screens/Home'
 import Provider from './app/Provider';
+// import Query from './app/Query'
 
 export default function App() {
   return (
@@ -14,10 +15,11 @@ export default function App() {
       <Provider>
         <View style={styles.container}>
           <Routes>
-            <Route path='/' element={<Welcome />} />
+            {/* <Route path='/' element={<Welcome />} /> */}
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
-            <Route path='/home' element={<Home />} />
+            <Route path='/' element={<Home />} />
+            {/* <Route path='/home/:id' element={<Query />} /> */}
           </Routes>
         </View>
       </Provider>

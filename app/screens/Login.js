@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useContext, useRef, useState } from 'react';
+import { useContext, useState } from 'react';
 import {
 	Alert,
 	StyleSheet,
@@ -16,52 +16,52 @@ import { Context } from '../Context/Context';
 import Authorization from '../Rest/User/Authorization';
 
 export default function Register() {
-	const emailRef = useRef();
-	const passwordRef = useRef();
-
-	let [email, setEmail] = useState('');
-	let [password, setPassword] = useState('');
+	let [email, setEmail] = useState('zubayerabm47@gmail.com');
+	let [password, setPassword] = useState('zubayer123');
 	const [focus, setFocus] = useState(false);
+	let [isLoading, setLoading] = useState(false)
 	const navigate = useNavigate();
 
 	const { state, dispatch } = useContext(Context);
 
 	const onPress = async () => {
+		setLoading(true)
 		email = email.length ? email : '';
-		// password = password.length >= 6 ? password : ''
+		password = password.length >= 6 ? password : ''
 
 		if (email && password) {
 			try {
 				const userData = await Authorization.login({
+					email,
 					password,
-					username: email,
 				});
-				// const res = await axios.post(
-				// 	'http://192.168.0.3:8000/v1/ur/login',
-				// 	{
-				// 		email,
-				// 		password,
-				// 	},
-				// 	{
-				// 		headers: {
-				// 			'Content-Type': 'application/json',
-				// 		},
-				// 	},
-				// );
+				
+				if (userData) {
+					
+					setTimeout(() => {
+						dispatch({
+							type: "loading",
+							value: false
+						})
+					}, 1000);
 
-				console.log(userData);
+					dispatch({
+						type: 'firstName',
+						value: userData.data[0].firstName,
+					});
 
-				dispatch({
-					type: 'email',
-					value: email,
-				});
 
-				setEmail('');
-				setPassword('');
-				return navigate('/home');
+					dispatch({
+						type: "Data",
+						value: userData.data[1]
+					})
+					setEmail('');
+					setPassword('');
+					return navigate('/home');
+				}
+
 			} catch (error) {
-				// console.log(error)
-				console.log(error.message);
+				console.log(error);
 			}
 		} else {
 			Alert.alert('Wrong Crendentials', 'Fields are required!');
@@ -89,11 +89,11 @@ export default function Register() {
 						<TextInput
 							style={styles.input}
 							value={email}
+							disabled={isLoading}
 							onChangeText={setEmail}
 							placeholder='Enter Your Email'
 							onFocus={() => setFocus(true)}
 							onBlur={() => setFocus(false)}
-							ref={emailRef}
 						/>
 					</View>
 					<View style={styles.singleInputContainer}>
@@ -101,12 +101,12 @@ export default function Register() {
 						<TextInput
 							style={styles.input}
 							value={password}
+							disabled={isLoading}
 							secureTextEntry={true}
 							onChangeText={setPassword}
 							placeholder='Enter Your Password'
 							onFocus={() => setFocus(true)}
 							onBlur={() => setFocus(false)}
-							ref={passwordRef}
 						/>
 					</View>
 					<View style={styles.singleInputContainer}>
@@ -116,6 +116,8 @@ export default function Register() {
 								mode='contained'
 								onPress={onPress}
 								color={Colors.secondary}
+								loading={isLoading}
+								disabled={isLoading}
 							>
 								Sign In
 							</Button>

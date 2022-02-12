@@ -2,28 +2,20 @@ import { useRef, useState } from 'react'
 import { Alert, StyleSheet, Text, TextInput, TouchableHighlight, TouchableOpacity, View } from 'react-native'
 import { Button } from 'react-native-paper'
 
+import Authorization from '../Rest/User/Authorization'
 import Colors from '../colors'
-import { useNavigate } from 'react-router-native'
+import { Link, useNavigate } from 'react-router-native'
 import axios from 'axios'
 
 export default function Register({  }) {
-    let [firstName, setFirstName] = useState('')
-    let [lastName, setLastName] = useState('')
-    let [email, setEmail] = useState('')
-    let [password, setPassword] = useState('')
-    let [address, setAddress] = useState('')
+    let [firstName, setFirstName] = useState('js')
+    let [lastName, setLastName] = useState('zubayer')
+    let [email, setEmail] = useState('zubayer@zubayer.com')
+    let [password, setPassword] = useState('js123456')
+    let [address, setAddress] = useState('js')
     let [focus, setFocus] = useState(false)
 
-    // refs
-    const firsNameRef = useRef();
-    const lastNameRef = useRef();
-    const emailRef = useRef();
-    const passRef = useRef();
-    const addressRef = useRef();
-
     const navigate = useNavigate()
-
-    const [submitData, setSubmitData] = useState([])
 
     async function onPress() {
         firstName = firstName.length ? firstName : ''
@@ -42,15 +34,18 @@ export default function Register({  }) {
                     address
                 }
 
-                await axios.post('http://localhost:5000/api/register', singleData)
+                const res = await Authorization.register(singleData)
+
+                if (!!res) {
+                    setFirstName('')
+                    setLastName('')
+                    setEmail('')
+                    setPassword('')
+                    setAddress('')
+
+                    return navigate('/login')
+                }
                 
-                setSubmitData([singleData, ...submitData])
-                setFirstName('')
-                setLastName('')
-                setEmail('')
-                setPassword('')
-                setAddress('')
-                return navigate('/login')
             } catch (error) {
                 console.log(error);
             }
@@ -81,7 +76,6 @@ export default function Register({  }) {
                             placeholder='Enter Your First Name'
                             onFocus={() => setFocus(true)}
                             onBlur={() => setFocus(false)}
-                            ref={firsNameRef}
                         /> 
                     </View>
                     <View style={styles.singleInputContainer}>
@@ -93,7 +87,6 @@ export default function Register({  }) {
                             placeholder='Enter Your Last Name'
                             onFocus={() => setFocus(true)}
                             onBlur={() => setFocus(false)}
-                            ref={lastNameRef}
                             />   
                     </View>
                     <View style={styles.singleInputContainer}>
@@ -105,7 +98,6 @@ export default function Register({  }) {
                             placeholder='Enter Your Email Address'
                             onFocus={() => setFocus(true)}
                             onBlur={() => setFocus(false)}
-                            ref={emailRef}
                             />   
                     </View>
                     <View style={styles.singleInputContainer}>
@@ -118,7 +110,6 @@ export default function Register({  }) {
                             secureTextEntry={true}
                             onFocus={() => setFocus(true)}
                             onBlur={() => setFocus(false)}
-                            ref={passRef}
                             />   
                     </View>
                     <View style={styles.singleInputContainer}>
@@ -130,7 +121,6 @@ export default function Register({  }) {
                             placeholder='Enter Your Address'
                             onFocus={() => setFocus(true)}
                             onBlur={() => setFocus(false)}
-                            ref={addressRef}
                             />   
                     </View>
                     <View style={styles.singleInputContainer}>
