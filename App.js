@@ -1,12 +1,10 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { NativeRouter, Route, Routes } from 'react-router-native';
-import Welcome from './app/screens/Welcome';
-import Register from './app/screens/Register';
-import Login from './app/screens/Login';
-import Home from './app/screens/Home'
 import Provider from './app/Provider';
+import Home from './app/screens/Home';
+import Login from './app/screens/Login';
+import Register from './app/screens/Register';
+import Welcome from './app/screens/Welcome';
 // import Query from './app/Query'
 
 export default function App() {
@@ -15,10 +13,10 @@ export default function App() {
       <Provider>
         <View style={styles.container}>
           <Routes>
-            {/* <Route path='/' element={<Welcome />} /> */}
+            <Route path='/' element={<Welcome />} />
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
-            <Route path='/' element={<Home />} />
+            <Route path='/home' element={<Home />} />
             {/* <Route path='/home/:id' element={<Query />} /> */}
           </Routes>
         </View>

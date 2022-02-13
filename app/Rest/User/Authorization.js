@@ -6,7 +6,6 @@ class Authorization {
 			const result = await Axios.post(`/login`, obj);
 			return result;
 		} catch (error) {
-			// return error.response.data.error;
 			console.log(error);
 		}
 	}
@@ -20,11 +19,10 @@ class Authorization {
 		}
 	}
 
-	async query(query) {
+	async data() {
 		try {
-			const res = await Axios.get(`/home/${query}`);
-
-			return res;
+			const res = await (await Axios.get('/data')).data
+			return res
 		} catch (error) {
 			console.log(error);
 		}

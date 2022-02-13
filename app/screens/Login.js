@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useContext, useState } from 'react';
 import {
 	Alert,
@@ -6,18 +5,18 @@ import {
 	Text,
 	TextInput,
 	TouchableHighlight,
-	View,
+	View
 } from 'react-native';
 import { Button } from 'react-native-paper';
 import { useNavigate } from 'react-router-native';
-
 import Colors from '../colors';
 import { Context } from '../Context/Context';
 import Authorization from '../Rest/User/Authorization';
 
+
 export default function Register() {
 	let [email, setEmail] = useState('zubayerabm47@gmail.com');
-	let [password, setPassword] = useState('zubayer123');
+	let [password, setPassword] = useState('zubayer');
 	const [focus, setFocus] = useState(false);
 	let [isLoading, setLoading] = useState(false)
 	const navigate = useNavigate();
@@ -38,23 +37,11 @@ export default function Register() {
 				
 				if (userData) {
 					
-					setTimeout(() => {
-						dispatch({
-							type: "loading",
-							value: false
-						})
-					}, 1000);
-
 					dispatch({
 						type: 'firstName',
-						value: userData.data[0].firstName,
+						value: userData.data.firstName,
 					});
 
-
-					dispatch({
-						type: "Data",
-						value: userData.data[1]
-					})
 					setEmail('');
 					setPassword('');
 					return navigate('/home');

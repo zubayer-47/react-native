@@ -1,6 +1,5 @@
-import { useState } from 'react';
-import { StyleSheet, Text, View, ImageBackground, TouchableOpacity } from 'react-native';
-import  { Button } from 'react-native-paper'
+import { ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Button } from 'react-native-paper';
 import { useNavigate } from 'react-router-native';
 import colors from '../colors';
 

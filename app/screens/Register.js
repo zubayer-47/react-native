@@ -1,39 +1,32 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { Alert, StyleSheet, Text, TextInput, TouchableHighlight, TouchableOpacity, View } from 'react-native'
 import { Button } from 'react-native-paper'
-
-import Authorization from '../Rest/User/Authorization'
+import { useNavigate } from 'react-router-native'
 import Colors from '../colors'
-import { Link, useNavigate } from 'react-router-native'
-import axios from 'axios'
+import Authorization from '../Rest/User/Authorization'
+
 
 export default function Register({  }) {
-    let [firstName, setFirstName] = useState('js')
-    let [lastName, setLastName] = useState('zubayer')
-    let [email, setEmail] = useState('zubayer@zubayer.com')
-    let [password, setPassword] = useState('js123456')
-    let [address, setAddress] = useState('js')
-    let [focus, setFocus] = useState(false)
+    const [firstName, setFirstName] = useState('js')
+    const [lastName, setLastName] = useState('zubayer')
+    const [email, setEmail] = useState('zubayer@zubayer.com')
+    const [password, setPassword] = useState('js123456')
+    const [details, setDetails] = useState('js')
+    const [focus, setFocus] = useState(false)
 
     const navigate = useNavigate()
 
     async function onPress() {
-        firstName = firstName.length ? firstName : ''
-        lastName = lastName.length ? lastName : ''
-        email = email.length ? email : ''
-        password = password.length ? password : ''
-        address = address.length ? address : ''
-        
-        if (firstName, lastName, email, password, address) {
+        if (firstName && lastName && email && password && details) {
             try {
                 const singleData = {
                     firstName,
                     lastName,
-                    password,
                     email,
-                    address
+                    password,
+                    details
                 }
-
+                
                 const res = await Authorization.register(singleData)
 
                 if (!!res) {
@@ -41,7 +34,7 @@ export default function Register({  }) {
                     setLastName('')
                     setEmail('')
                     setPassword('')
-                    setAddress('')
+                    setDetails('')
 
                     return navigate('/login')
                 }
@@ -50,7 +43,7 @@ export default function Register({  }) {
                 console.log(error);
             }
         } else {
-            Alert.alert('Wrong Crendentials', 'Fields are required!')
+            Alert.alert('Error', 'Fields are required!')
         }
 
     }
@@ -116,8 +109,8 @@ export default function Register({  }) {
                         <Text style={styles.text}>Address</Text>
                         <TextInput
                             style={styles.input}
-                            value={address}
-                            onChangeText={setAddress}
+                            value={details}
+                            onChangeText={setDetails}
                             placeholder='Enter Your Address'
                             onFocus={() => setFocus(true)}
                             onBlur={() => setFocus(false)}
