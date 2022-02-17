@@ -23,7 +23,7 @@ export default function Welcome() {
     </ImageBackground>
   );
 }
-  
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

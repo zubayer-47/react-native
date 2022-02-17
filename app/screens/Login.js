@@ -51,7 +51,7 @@ export default function Register() {
 				console.log(error);
 			}
 		} else {
-			Alert.alert('Wrong Crendentials', 'Fields are required!');
+			Alert.alert('Wrong Information', 'Fields are required!');
 		}
 	};
 
@@ -98,7 +98,6 @@ export default function Register() {
 					</View>
 					<View style={styles.singleInputContainer}>
 						<TouchableHighlight style={{ marginTop: 5 }}>
-							{/* <Button onPress={onPress} color={colors.secondary} title='Sign In' /> */}
 							<Button
 								mode='contained'
 								onPress={onPress}
