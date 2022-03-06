@@ -13,11 +13,13 @@ export default function Register({  }) {
     const [password, setPassword] = useState('js123456')
     const [details, setDetails] = useState('js')
     const [focus, setFocus] = useState(false)
+    const [isLoading, setLoading] = useState(false)
 
     const navigate = useNavigate()
 
     async function onPress() {
         if (firstName && lastName && email && password && details) {
+            setLoading(true)
             try {
                 const singleData = {
                     firstName,
@@ -69,6 +71,7 @@ export default function Register({  }) {
                             placeholder='Enter Your First Name'
                             onFocus={() => setFocus(true)}
                             onBlur={() => setFocus(false)}
+                            disableFullscreenUI={isLoading}
                         /> 
                     </View>
                     <View style={styles.singleInputContainer}>
@@ -80,6 +83,7 @@ export default function Register({  }) {
                             placeholder='Enter Your Last Name'
                             onFocus={() => setFocus(true)}
                             onBlur={() => setFocus(false)}
+                            disableFullscreenUI={isLoading}
                             />   
                     </View>
                     <View style={styles.singleInputContainer}>
@@ -91,6 +95,7 @@ export default function Register({  }) {
                             placeholder='Enter Your Email Address'
                             onFocus={() => setFocus(true)}
                             onBlur={() => setFocus(false)}
+                            disableFullscreenUI={isLoading}
                             />   
                     </View>
                     <View style={styles.singleInputContainer}>
@@ -103,6 +108,7 @@ export default function Register({  }) {
                             secureTextEntry={true}
                             onFocus={() => setFocus(true)}
                             onBlur={() => setFocus(false)}
+                            disableFullscreenUI={isLoading}
                             />   
                     </View>
                     <View style={styles.singleInputContainer}>
@@ -114,11 +120,12 @@ export default function Register({  }) {
                             placeholder='Enter Your Address'
                             onFocus={() => setFocus(true)}
                             onBlur={() => setFocus(false)}
+                            disableFullscreenUI={isLoading}
                             />   
                     </View>
                     <View style={styles.singleInputContainer}>
                         <TouchableHighlight style={{marginTop: 5}}>
-                                <Button mode='contained' onPress={onPress} color={Colors.secondary}>
+                                <Button mode='contained' onPress={onPress} color={Colors.secondary} disabled={isLoading} loading={isLoading}>
                                     Sign Up
                                 </Button>
                         </TouchableHighlight>

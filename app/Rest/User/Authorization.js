@@ -27,6 +27,16 @@ class Authorization {
 			console.log(error);
 		}
 	}
+
+	async singleData(id) {
+		try {
+			const res = await (await Axios.get(`/${id}`)).data
+
+			return res
+		} catch (error) {
+			console.log(error);
+		}
+	}
 }
 
 export default new Authorization();

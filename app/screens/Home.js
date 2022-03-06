@@ -84,6 +84,7 @@ export default function Home() {
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -110,7 +111,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     padding: 5,
   },
-  item: {},
   singleInputContainer: {
     width: "100%",
     paddingHorizontal: 15,
