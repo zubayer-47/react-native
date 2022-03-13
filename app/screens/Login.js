@@ -15,7 +15,7 @@ import Authorization from '../Rest/User/Authorization';
 
 
 export default function Register() {
-	let [email, setEmail] = useState('zubayerjs.dev@gmail.com');
+	let [email, setEmail] = useState('zubayer@gmail.com');
 	let [password, setPassword] = useState('zubayer');
 	const [focus, setFocus] = useState(false);
 	let [isLoading, setLoading] = useState(false)
@@ -27,7 +27,7 @@ export default function Register() {
 	const onPress = async () => {
 		setLoading(true)
 		setShow(true)
-		email = email.length ? email : '';
+		email = email.length >= 10 && email.includes('@') ? email : '';
 		password = password.length >= 6 ? password : ''
 
 		if (email && password) {
@@ -38,7 +38,6 @@ export default function Register() {
 				});
 				
 				if (userData) {
-					
 					dispatch({
 						type: 'firstName',
 						value: userData.data.firstName,
@@ -47,20 +46,27 @@ export default function Register() {
 					setEmail('');
 					setPassword('');
 					return navigate('/home');
+				} else {
+					Alert.alert("Wrong Information", "Provide valid information.")
+					setLoading(false)
+					setShow(false)
 				}
 
 			} catch (error) {
 				console.log(error);
+				setLoading(false)
 				setShow(false)
 			}
 		} else {
-			Alert.alert('Wrong Information', 'Fields are required!');
+			Alert.alert('Wrong Information', 'Please fill up correctly!');
+			setLoading(false)
+			setShow(false)
 		}
 	};
 
 	return (
 		<View style={styles.container}>
-			<View style={{ paddingVertical: focus ? '33%' : '55%' }}>
+			<View style={{ paddingVertical: focus ? '20%' : '55%' }}>
 				<Text
 					style={[
 						styles.text,
@@ -79,7 +85,6 @@ export default function Register() {
 						<TextInput
 							style={styles.input}
 							value={email}
-							disabled={isLoading}
 							onChangeText={setEmail}
 							placeholder='Enter Your Email'
 							onFocus={() => setFocus(true)}
@@ -91,10 +96,9 @@ export default function Register() {
 						<TextInput
 							style={styles.input}
 							value={password}
-							disabled={isLoading}
 							secureTextEntry={true}
 							onChangeText={setPassword}
-							placeholder='Enter Your Password'
+							placeholder='Enter Your Password (Min 6 chareter)'
 							onFocus={() => setFocus(true)}
 							onBlur={() => setFocus(false)}
 						/>

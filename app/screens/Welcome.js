@@ -7,6 +7,7 @@ export default function Welcome() {
     const navigate = useNavigate()
   return (
     <ImageBackground source={require('../../assets/bg-burger.jpg')} style={[styles.container]}>
+       {/* <View style={{backgroundColor: '#000'}}> */}
         <View style={styles.container}>
             <View style={{marginTop: 10}}>
               <Text style={styles.title}>Foodvalley</Text>

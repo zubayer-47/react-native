@@ -10,6 +10,15 @@ class Authorization {
 		}
 	}
 
+	async order(payload) {
+		try {
+			const result = await Axios.post(`/order/`, payload)
+			return result;
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
 	async register(data) {
 		try {
 			const res = await Axios.post('/register', data)

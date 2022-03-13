@@ -7,11 +7,11 @@ import Authorization from '../Rest/User/Authorization'
 
 
 export default function Register({ }) {
-    const [firstName, setFirstName] = useState('js')
-    const [lastName, setLastName] = useState('zubayer')
-    const [email, setEmail] = useState('zubayer@zubayer.com')
-    const [password, setPassword] = useState('js123456')
-    const [details, setDetails] = useState('js')
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
+    let [email, setEmail] = useState('')
+    let [password, setPassword] = useState('')
+    const [details, setDetails] = useState('')
     const [focus, setFocus] = useState(false)
     const [isLoading, setLoading] = useState(false)
     const [disabled, setDisabled] = useState(false)
@@ -19,7 +19,24 @@ export default function Register({ }) {
     const navigate = useNavigate()
 
     async function onPress() {
-        if (firstName && lastName && email && password && details) {
+        email = email.length >= 10 && email.includes('@') ? email : '';
+        password = password.length >= 6 ? password : ''
+
+        if (!password) {
+            setLoading(false);
+            setDisabled(false)
+            Alert.alert("Wrong Password!", "Required and Password should be 6 character at least!");
+        }
+
+        if (!email) {
+            setLoading(false);
+            setDisabled(false)
+
+            Alert.alert("Wrong Email!", "Required and Email should have '@' character with 10 character at least!")
+            return;
+        }
+
+        if (firstName && lastName && details) {
             setLoading(true)
             setDisabled(true)
             try {
@@ -33,7 +50,7 @@ export default function Register({ }) {
 
                 const res = await Authorization.register(singleData)
 
-                if (!!res) {
+                if (res) {
                     setFirstName('')
                     setLastName('')
                     setEmail('')
@@ -45,21 +62,25 @@ export default function Register({ }) {
 
             } catch (error) {
                 console.log(error);
+                setLoading(false);
                 setDisabled(false)
             }
         } else {
             Alert.alert('Error', 'Fields are required!')
+            setLoading(false);
+            setDisabled(false)
         }
+    }
+
+    const singleInputContainerOnFocus = {
+        paddingVertical: 5,
+        width: 330,
+        paddingHorizontal: 15,
     }
 
     return (
         <View style={styles.container}>
-            {/* <View style={{ top: focus ? '11%' : '10%', left: '-35%' }}> */}
-            <View style={{ top: focus ? '11%' : '7%', left: '-43%' }}>
-                {/* <Button mode='contained' color={Colors.secondary} dark={true} onPress={() => navigate('/login')}>
-                login
-                </Button> */}
-
+            <View style={{ top: focus ?  '12%' : '8%', left: '-43%' }}>
                 <IconButton 
                     icon='login'
                     color={Colors.secondary}
@@ -67,10 +88,10 @@ export default function Register({ }) {
                     disabled={disabled}
                 />
             </View>
-            <View style={{ paddingVertical: focus ? '11%' : '30%', }}>
+            <View style={{ paddingVertical: focus ? '4%' : '30%', }}>
                 <Text style={[styles.text, { fontSize: 30, marginBottom: 10, alignSelf: 'center', color: Colors.secondary }]}>Sign up</Text>
                 <View style={styles.inputContainer}>
-                    <View style={styles.singleInputContainer}>
+                    <View style={focus ? singleInputContainerOnFocus : styles.singleInputContainer}>
                         <Text style={styles.text}>First Name</Text>
                         <TextInput
                             style={styles.input}
@@ -82,7 +103,7 @@ export default function Register({ }) {
                             disableFullscreenUI={isLoading}
                         />
                     </View>
-                    <View style={styles.singleInputContainer}>
+                    <View style={focus ? singleInputContainerOnFocus : styles.singleInputContainer}>
                         <Text style={styles.text}>Last Name</Text>
                         <TextInput
                             style={styles.input}
@@ -94,7 +115,7 @@ export default function Register({ }) {
                             disableFullscreenUI={isLoading}
                         />
                     </View>
-                    <View style={styles.singleInputContainer}>
+                    <View style={focus ? singleInputContainerOnFocus : styles.singleInputContainer}>
                         <Text style={styles.text}>Email</Text>
                         <TextInput
                             style={styles.input}
@@ -106,7 +127,7 @@ export default function Register({ }) {
                             disableFullscreenUI={isLoading}
                         />
                     </View>
-                    <View style={styles.singleInputContainer}>
+                    <View style={focus ? singleInputContainerOnFocus : styles.singleInputContainer}>
                         <Text style={styles.text}>Password</Text>
                         <TextInput
                             style={styles.input}
@@ -119,7 +140,7 @@ export default function Register({ }) {
                             disableFullscreenUI={isLoading}
                         />
                     </View>
-                    <View style={styles.singleInputContainer}>
+                    <View style={focus ? singleInputContainerOnFocus : styles.singleInputContainer}>
                         <Text style={styles.text}>Address</Text>
                         <TextInput
                             style={styles.input}
@@ -131,7 +152,7 @@ export default function Register({ }) {
                             disableFullscreenUI={isLoading}
                         />
                     </View>
-                    <View style={styles.singleInputContainer}>
+                    <View style={focus ? singleInputContainerOnFocus : styles.singleInputContainer}>
                         <TouchableHighlight style={{ marginTop: 5 }}>
                             <Button mode='contained' dark={true} onPress={onPress} color={Colors.secondary} disabled={isLoading} loading={isLoading}>
                                 Register
@@ -161,6 +182,9 @@ const styles = StyleSheet.create({
         width: 330,
         paddingHorizontal: 15,
         paddingVertical: 10,
+    },
+    singleInputContainerOnFocus: {
+        paddingVertical: 5
     },
     input: {
         backgroundColor: Colors.light,

@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
-import { IconButton } from "react-native-paper";
+import { Button, IconButton } from "react-native-paper";
 import { useNavigate } from "react-router-native";
 import Colors from "../colors";
 import { Context } from "../Context/Context";
@@ -71,14 +71,9 @@ export default function Home() {
             What do you want today!
           </Text>
         </View>
-        {/* <Button mode='contained' style={{ width: "25%" }} color={Colors.secondary} dark={true} onPress={handleLogOut}>
+        <Button mode='contained' style={{ width: "25%" }} color={Colors.secondary} dark={true} onPress={handleLogOut}>
         logout
-        </Button> */}
-        <IconButton 
-          icon="logout"
-          color={Colors.secondary}
-          onPress={handleLogOut}
-        />
+        </Button>
       </View>
 
       <View style={styles.singleInputContainer}>

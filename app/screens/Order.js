@@ -1,36 +1,60 @@
 import React, { useContext, useState } from "react";
 import { Alert, Image, StyleSheet, Text, View } from "react-native";
-import { Button } from "react-native-paper";
+import { Button, IconButton } from "react-native-paper";
 import { useNavigate, useParams } from "react-router-native";
 import colors from "../colors";
 import { Context } from "../Context/Context";
+import Authorization from "../Rest/User/Authorization";
 
 export default function Order() {
     const navigate = useNavigate()
     const [isLoading, setLoading] = useState(false)
   const params = useParams();
   const { state } = useContext(Context);
-  
 
   const singleItem = state.data.find((item) => item._id === params.id);
 
-  const onPress = () => {
-      setLoading(true)
-    Alert.alert("Order Status", "Your Order Success! We'll Deliver it within Few Moments")
+  const onPress = async () => {
+    
+    try {
+      const res = await Authorization.order(singleItem);
+      
+      if (res) {
+          setLoading(true)
+          
+          setTimeout(() => {
+            Alert.alert("Contact", "Cash on delivery, For emargency call '01708567056'")
+          }, 100);
+  
+          Alert.alert("Order Status", "Your Order Success! We'll Deliver it within Few Moments")
 
-    navigate('/home')
+          return navigate('/home')
+        }
+        
+      } catch (error) {
+        setLoading(false)
+        console.log(error.message);
+      }
+
   };
 
   const { strMealThumb, price, strMeal } = singleItem;
   return (
+    <View style={{ flex: 1 }}>
+      <IconButton 
+          icon='logout'
+          color={colors.secondary}
+          onPress={() => navigate('/home')}
+          style={{top:60,alignSelf: 'flex-end'}}
+
+      />
     <View style={styles.container}>
       <Image
         source={{
-            uri: strMealThumb,
-            cache: 'only-if-cached'
-          }}
+          uri: strMealThumb,
+        }}
         style={styles.img}
-      />
+        />
 
       <View style={styles.detailsWrapper}>
         <Text style={styles.title}>{strMeal}</Text>
@@ -40,15 +64,17 @@ export default function Order() {
       </View>
 
       <Button
-        mode="contained"
-        color={colors.secondary}
-        onPress={onPress}
         style={styles.btn}
+        mode='contained'
+        onPress={onPress}
+        dark={true}
+        color={colors.secondary}
         loading={isLoading}
         disabled={isLoading}
-      >
+        >
         Order Now
       </Button>
+    </View>
     </View>
   );
 }
@@ -57,6 +83,7 @@ const styles = StyleSheet.create({
   btn: {
     width: "90%",
     alignSelf: "center",
+    marginVertical: 33
   },
   container: {
     flex: 1,
@@ -70,9 +97,10 @@ const styles = StyleSheet.create({
   },
   img: {
     width: "100%",
-    height: 300,
+    height: 280,
     borderBottomRightRadius: 20,
     borderBottomLeftRadius: 20,
+    marginVertical: 20
   },
   price: {
     marginTop: 20,
