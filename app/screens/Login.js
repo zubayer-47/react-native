@@ -15,16 +15,18 @@ import Authorization from '../Rest/User/Authorization';
 
 
 export default function Register() {
-	let [email, setEmail] = useState('zubayerabm47@gmail.com');
+	let [email, setEmail] = useState('zubayerjs.dev@gmail.com');
 	let [password, setPassword] = useState('zubayer');
 	const [focus, setFocus] = useState(false);
 	let [isLoading, setLoading] = useState(false)
+	const [show, setShow] = useState(false)
 	const navigate = useNavigate();
 
 	const { state, dispatch } = useContext(Context);
 
 	const onPress = async () => {
 		setLoading(true)
+		setShow(true)
 		email = email.length ? email : '';
 		password = password.length >= 6 ? password : ''
 
@@ -49,6 +51,7 @@ export default function Register() {
 
 			} catch (error) {
 				console.log(error);
+				setShow(false)
 			}
 		} else {
 			Alert.alert('Wrong Information', 'Fields are required!');
@@ -101,15 +104,17 @@ export default function Register() {
 							<Button
 								mode='contained'
 								onPress={onPress}
+								dark={true}
 								color={Colors.secondary}
 								loading={isLoading}
 								disabled={isLoading}
 							>
-								Sign In
+								login
 							</Button>
 						</TouchableHighlight>
 					</View>
-					<View
+					{!show ? (
+						<View
 						style={[
 							styles.singleInputContainer,
 							{
@@ -127,6 +132,7 @@ export default function Register() {
 							Sign Up
 						</Text>
 					</View>
+					) : <Text />}
 				</View>
 			</View>
 		</View>

@@ -1,5 +1,7 @@
 import { useContext, useEffect } from "react";
-import { Image, StyleSheet, Text, TextInput, View } from "react-native";
+import { StyleSheet, Text, TextInput, View } from "react-native";
+import { IconButton } from "react-native-paper";
+import { useNavigate } from "react-router-native";
 import Colors from "../colors";
 import { Context } from "../Context/Context";
 import Render from "../Render";
@@ -7,6 +9,7 @@ import Authorization from "../Rest/User/Authorization";
 
 export default function Home() {
   const { state, dispatch } = useContext(Context);
+  const navigate = useNavigate()
 
   useEffect(() => {
     (async () => {
@@ -41,6 +44,10 @@ export default function Home() {
     })
   }
 
+  const handleLogOut = () => {
+    return navigate('/')
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -64,10 +71,13 @@ export default function Home() {
             What do you want today!
           </Text>
         </View>
-        <Image
-          source={require("../../assets/bg.png")}
-          fadeDuration={800}
-          style={{ width: 40, height: 40, borderRadius: 50 }}
+        {/* <Button mode='contained' style={{ width: "25%" }} color={Colors.secondary} dark={true} onPress={handleLogOut}>
+        logout
+        </Button> */}
+        <IconButton 
+          icon="logout"
+          color={Colors.secondary}
+          onPress={handleLogOut}
         />
       </View>
 

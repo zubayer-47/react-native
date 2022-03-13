@@ -5,7 +5,7 @@ import Home from "./app/screens/Home";
 import Login from "./app/screens/Login";
 import Order from './app/screens/Order';
 import Register from "./app/screens/Register";
-import Welcome from "./app/screens/Welcome";
+import Welcome from './app/screens/Welcome';
 
 export default function App() {
   return (

@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import { Alert, StyleSheet, Text, TextInput, TouchableHighlight, TouchableOpacity, View } from 'react-native'
-import { Button } from 'react-native-paper'
+import { Alert, StyleSheet, Text, TextInput, TouchableHighlight, View } from 'react-native'
+import { Button, IconButton } from 'react-native-paper'
 import { useNavigate } from 'react-router-native'
 import Colors from '../colors'
 import Authorization from '../Rest/User/Authorization'
 
 
-export default function Register({  }) {
+export default function Register({ }) {
     const [firstName, setFirstName] = useState('js')
     const [lastName, setLastName] = useState('zubayer')
     const [email, setEmail] = useState('zubayer@zubayer.com')
@@ -14,12 +14,14 @@ export default function Register({  }) {
     const [details, setDetails] = useState('js')
     const [focus, setFocus] = useState(false)
     const [isLoading, setLoading] = useState(false)
+    const [disabled, setDisabled] = useState(false)
 
     const navigate = useNavigate()
 
     async function onPress() {
         if (firstName && lastName && email && password && details) {
             setLoading(true)
+            setDisabled(true)
             try {
                 const singleData = {
                     firstName,
@@ -28,7 +30,7 @@ export default function Register({  }) {
                     password,
                     details
                 }
-                
+
                 const res = await Authorization.register(singleData)
 
                 if (!!res) {
@@ -40,24 +42,30 @@ export default function Register({  }) {
 
                     return navigate('/login')
                 }
-                
+
             } catch (error) {
                 console.log(error);
+                setDisabled(false)
             }
         } else {
             Alert.alert('Error', 'Fields are required!')
         }
-
     }
 
     return (
         <View style={styles.container}>
-            <View style={{ top: focus ? '11%' : '10%', left: '-35%' }}>
-                <TouchableOpacity>
-                    <Button mode='contained' color={Colors.secondary} onPress={() => navigate('/login')}>
-                        login
-                    </Button>
-                </TouchableOpacity>
+            {/* <View style={{ top: focus ? '11%' : '10%', left: '-35%' }}> */}
+            <View style={{ top: focus ? '11%' : '7%', left: '-43%' }}>
+                {/* <Button mode='contained' color={Colors.secondary} dark={true} onPress={() => navigate('/login')}>
+                login
+                </Button> */}
+
+                <IconButton 
+                    icon='login'
+                    color={Colors.secondary}
+                    onPress={() => navigate('/login')}
+                    disabled={disabled}
+                />
             </View>
             <View style={{ paddingVertical: focus ? '11%' : '30%', }}>
                 <Text style={[styles.text, { fontSize: 30, marginBottom: 10, alignSelf: 'center', color: Colors.secondary }]}>Sign up</Text>
@@ -72,7 +80,7 @@ export default function Register({  }) {
                             onFocus={() => setFocus(true)}
                             onBlur={() => setFocus(false)}
                             disableFullscreenUI={isLoading}
-                        /> 
+                        />
                     </View>
                     <View style={styles.singleInputContainer}>
                         <Text style={styles.text}>Last Name</Text>
@@ -84,7 +92,7 @@ export default function Register({  }) {
                             onFocus={() => setFocus(true)}
                             onBlur={() => setFocus(false)}
                             disableFullscreenUI={isLoading}
-                            />   
+                        />
                     </View>
                     <View style={styles.singleInputContainer}>
                         <Text style={styles.text}>Email</Text>
@@ -96,7 +104,7 @@ export default function Register({  }) {
                             onFocus={() => setFocus(true)}
                             onBlur={() => setFocus(false)}
                             disableFullscreenUI={isLoading}
-                            />   
+                        />
                     </View>
                     <View style={styles.singleInputContainer}>
                         <Text style={styles.text}>Password</Text>
@@ -109,7 +117,7 @@ export default function Register({  }) {
                             onFocus={() => setFocus(true)}
                             onBlur={() => setFocus(false)}
                             disableFullscreenUI={isLoading}
-                            />   
+                        />
                     </View>
                     <View style={styles.singleInputContainer}>
                         <Text style={styles.text}>Address</Text>
@@ -121,19 +129,19 @@ export default function Register({  }) {
                             onFocus={() => setFocus(true)}
                             onBlur={() => setFocus(false)}
                             disableFullscreenUI={isLoading}
-                            />   
+                        />
                     </View>
                     <View style={styles.singleInputContainer}>
-                        <TouchableHighlight style={{marginTop: 5}}>
-                                <Button mode='contained' onPress={onPress} color={Colors.secondary} disabled={isLoading} loading={isLoading}>
-                                    Sign Up
-                                </Button>
+                        <TouchableHighlight style={{ marginTop: 5 }}>
+                            <Button mode='contained' dark={true} onPress={onPress} color={Colors.secondary} disabled={isLoading} loading={isLoading}>
+                                Register
+                            </Button>
                         </TouchableHighlight>
                     </View>
                 </View>
             </View>
         </View>
-  )
+    )
 }
 
 const styles = StyleSheet.create({
