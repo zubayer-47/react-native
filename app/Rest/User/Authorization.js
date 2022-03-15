@@ -12,7 +12,7 @@ class Authorization {
 
 	async order(payload) {
 		try {
-			const result = await Axios.post(`/order/`, payload)
+			const result = await Axios.post(`/order`, payload)
 			return result;
 		} catch (error) {
 			console.log(error);
@@ -49,3 +49,5 @@ class Authorization {
 }
 
 export default new Authorization();
+
+

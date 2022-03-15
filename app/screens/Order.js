@@ -7,74 +7,81 @@ import { Context } from "../Context/Context";
 import Authorization from "../Rest/User/Authorization";
 
 export default function Order() {
-    const navigate = useNavigate()
-    const [isLoading, setLoading] = useState(false)
+  const navigate = useNavigate()
+  const [isLoading, setLoading] = useState(false)
   const params = useParams();
   const { state } = useContext(Context);
 
   const singleItem = state.data.find((item) => item._id === params.id);
 
   const onPress = async () => {
-    
+
     try {
       const res = await Authorization.order(singleItem);
-      
-      if (res) {
-          setLoading(true)
-          
-          setTimeout(() => {
-            Alert.alert("Contact", "Cash on delivery, For emargency call '01708567056'")
-          }, 100);
-  
-          Alert.alert("Order Status", "Your Order Success! We'll Deliver it within Few Moments")
 
-          return navigate('/home')
-        }
-        
-      } catch (error) {
-        setLoading(false)
-        console.log(error.message);
+      if (res) {
+        setLoading(true)
+
+        Alert.alert(
+          "Order Status",
+          "Your Order Success! We'll Deliver it within Few Moments",
+          [
+            {
+              text: "ok",
+              onPress: () => {
+                Alert.alert("Contact", "Cash on delivery, For emergency call '01708567056'")
+                navigate('/home')
+              },
+              style: "cancel",
+            },
+          ]
+        );
       }
+
+    } catch (error) {
+      setLoading(false)
+      console.log(error.message);
+    }
 
   };
 
   const { strMealThumb, price, strMeal } = singleItem;
   return (
     <View style={{ flex: 1 }}>
-      <IconButton 
-          icon='logout'
-          color={colors.secondary}
-          onPress={() => navigate('/home')}
-          style={{top:60,alignSelf: 'flex-end'}}
+      <IconButton
+        icon='logout'
+        color={colors.secondary}
+        onPress={() => navigate('/home')}
+        style={{ top: 60, alignSelf: 'flex-end' }}
 
       />
-    <View style={styles.container}>
-      <Image
-        source={{
-          uri: strMealThumb,
-        }}
-        style={styles.img}
+      <View style={styles.container}>
+        <Image
+          source={{
+            uri: strMealThumb,
+          }}
+          style={styles.img}
         />
 
-      <View style={styles.detailsWrapper}>
-        <Text style={styles.title}>{strMeal}</Text>
-        <Text style={{ color: "#ccc" }}>Only Today This Food Offer</Text>
+        <View style={styles.detailsWrapper}>
+          <Text style={styles.title}>{strMeal}</Text>
+          <Text style={{ color: "#ccc" }}>Only Today This Food Offer</Text>
 
-        <Text style={styles.price}>TK. {price}</Text>
-      </View>
+          <Text style={styles.price}>TK. {price}</Text>
+        </View>
 
-      <Button
-        style={styles.btn}
-        mode='contained'
-        onPress={onPress}
-        dark={true}
-        color={colors.secondary}
-        loading={isLoading}
-        disabled={isLoading}
+        <Button
+          style={styles.btn}
+          mode='contained'
+          onPress={onPress}
+          dark={true}
+          color={colors.secondary}
+          loading={isLoading}
+          disabled={isLoading}
         >
-        Order Now
-      </Button>
-    </View>
+          Order Now
+        </Button>
+      </View>
     </View>
   );
 }
